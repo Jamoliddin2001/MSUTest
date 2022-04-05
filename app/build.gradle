@@ -1,7 +1,20 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+    id 'kotlin-parcelize'
 }
+
+kapt {
+    correctErrorTypes true
+}
+
+hilt {
+    enableAggregatingTask = true
+}
+
 
 android {
     compileSdk 32
@@ -58,4 +71,43 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
+
+
+    // Extended icons
+    implementation "androidx.compose.material:material-icons-extended:$compose_version"
+
+    // FlowLayouts
+    implementation "com.google.accompanist:accompanist-flowlayout:0.21.2-beta"
+
+    // Status bar color
+    implementation "com.google.accompanist:accompanist-systemuicontroller:0.17.0"
+
+    //Video player
+    implementation 'com.google.android.exoplayer:exoplayer:2.16.0'
+
+    // Navigation
+    implementation "androidx.navigation:navigation-compose:2.4.0-beta02"
+
+    //Paging
+    implementation "androidx.paging:paging-compose:1.0.0-alpha14"
+
+    // Coil
+    implementation 'io.coil-kt:coil-compose:1.4.0'
+
+    // Image compressor
+    implementation 'id.zelory:compressor:3.0.1'
+
+    //Retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+
+    // Json
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+
+    // Logging
+    implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2'
+
+    // Hilt
+    implementation 'androidx.hilt:hilt-navigation-compose:1.0.0-alpha03'
+    implementation 'com.google.dagger:hilt-android:2.40'
+    kapt 'com.google.dagger:hilt-compiler:2.40'
 }

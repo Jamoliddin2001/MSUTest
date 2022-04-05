@@ -1,4 +1,4 @@
-package jamoliddin.tj.mytest.ui.theme
+package jamoliddin.tj.mytest.presentation.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes

@@ -1,4 +1,4 @@
-package jamoliddin.tj.mytest.ui.theme
+package jamoliddin.tj.mytest.presentation.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle

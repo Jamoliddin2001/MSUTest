@@ -10,6 +10,7 @@ import androidx.navigation.compose.NavHost
 import jamoliddin.tj.mytest.App
 import jamoliddin.tj.mytest.domain.model.Graph
 import jamoliddin.tj.mytest.domain.model.Screen
+import jamoliddin.tj.mytest.presentation.navigation.graphs.LoginGraph
 import jamoliddin.tj.mytest.presentation.navigation.graphs.WelcomeGraph
 
 
@@ -36,6 +37,7 @@ internal fun Navigation(modifier: Modifier, navController: NavHostController) {
         modifier = modifier
     ){
         WelcomeGraph(navController = navController)
+        LoginGraph(navController = navController)
     }
 
 

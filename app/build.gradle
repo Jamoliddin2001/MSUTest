@@ -110,4 +110,7 @@ dependencies {
     implementation 'androidx.hilt:hilt-navigation-compose:1.0.0-alpha03'
     implementation 'com.google.dagger:hilt-android:2.40'
     kapt 'com.google.dagger:hilt-compiler:2.40'
+
+    //Animation
+    implementation 'com.google.accompanist:accompanist-navigation-animation:0.16.1'
 }

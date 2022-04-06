@@ -1,7 +1,6 @@
-package jamoliddin.tj.mytest.presentation.screens.welcome
+package jamoliddin.tj.mytest.presentation.screens.auth
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Text
@@ -10,19 +9,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
-import jamoliddin.tj.mytest.domain.model.Screen
 
 @Composable
-fun WelcomeScreen(navController: NavController) {
+fun LoginScreen(navController: NavController) {
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.Blue)
-            .clickable {
-                navController.navigate(Screen.LoginScreen.route)
-            },
+        modifier = Modifier.fillMaxSize().background(Color.Red),
         contentAlignment = Alignment.Center
     ) {
-        Text(text = "Welcome")
+        Text(text = "Login")
     }
 }

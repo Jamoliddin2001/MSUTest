@@ -2,7 +2,9 @@ package jamoliddin.tj.mytest.presentation.components
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -26,26 +28,21 @@ import jamoliddin.tj.mytest.presentation.theme.myDark
 @Composable
 fun SplashBackdrop(
     alpha: Float,
-    @DrawableRes imageId: Int = R.drawable.image_background_splash,
+    @DrawableRes animationImageId: Int = R.drawable.msu
 ) {
-    Surface(color = myDark) {
+    Surface(color = Primary) {
         Box(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize().background(Color.White),
             contentAlignment = Alignment.Center
         ) {
-            Image(
-                modifier = Modifier.fillMaxSize(),
-                contentScale = ContentScale.Crop,
-                painter = painterResource(id = imageId),
-                contentDescription = null
-            )
+
             Image(
                 modifier = Modifier
                     .size(220.dp)
                     .alpha(alpha = alpha)
                     .clip(CircleShape),
                 alignment = Alignment.Center,
-                painter = painterResource(id = R.drawable.msu),
+                painter = painterResource(id = animationImageId),
                 contentDescription = null
             )
         }

@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import jamoliddin.tj.mytest.R
 import jamoliddin.tj.mytest.domain.model.Screen
 import jamoliddin.tj.mytest.presentation.components.SplashBackdrop
 import jamoliddin.tj.mytest.presentation.theme.Primary
@@ -23,13 +24,13 @@ fun SplashScreen(navController: NavController) {
     val alphaAnim = animateFloatAsState(
         targetValue = if (startAnimation) 1f else 0f,
         animationSpec = tween(
-            durationMillis = 2000
+            durationMillis = 3000
         )
     )
 
     LaunchedEffect(key1 = true ){
         startAnimation = true
-        delay(3500)
+        delay(4000)
         navController.popBackStack()
         navController.navigate(Screen.WelcomeScreen.route)
     }
@@ -37,7 +38,7 @@ fun SplashScreen(navController: NavController) {
 
     SideEffect {
         controller.setSystemBarsColor(
-            color = myDark
+            color = Color.White
         )
     }
 

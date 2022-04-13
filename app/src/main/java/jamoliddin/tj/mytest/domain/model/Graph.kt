@@ -6,4 +6,6 @@ sealed class Graph(val route: String){
     object Welcome: Graph("WelcomeGraph")
     object Main: Graph("MainGraph")
     object Profile: Graph("ProfileGraph")
+    object Schedule: Graph("ScheduleGraph")
+    object MyTestsHistory: Graph("MyTestGraph")
 }

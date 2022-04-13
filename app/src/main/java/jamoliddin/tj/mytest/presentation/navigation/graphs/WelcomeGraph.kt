@@ -21,7 +21,9 @@ internal fun NavGraphBuilder.WelcomeGraph(navController: NavController) {
         }
 
         composable(route = Screen.WelcomeScreen.route) {
+            AnimationBetweenComposable {
                 WelcomeScreen(navController = navController)
+            }
         }
     }
 }

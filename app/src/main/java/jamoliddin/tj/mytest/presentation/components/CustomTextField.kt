@@ -2,6 +2,7 @@ package jamoliddin.tj.mytest.presentation.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -60,7 +61,7 @@ fun CustomTextField(
 
 
     TextField(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier.fillMaxWidth(),
         value = text,
         label = {
             Text(
@@ -73,6 +74,7 @@ fun CustomTextField(
         onValueChange = {
             if(it.length <= maxCount){
                 onTextChanged(it)
+                text = it
             }
         },
         singleLine = true,
@@ -82,7 +84,8 @@ fun CustomTextField(
             unfocusedLabelColor = GrayLabel,
             backgroundColor = Color.Transparent,
             unfocusedIndicatorColor = GrayIndicator,
-            focusedIndicatorColor = Primary
+            focusedIndicatorColor = Primary,
+            cursorColor = Primary
         ),
         textStyle = textStyle,
         keyboardActions = keyboardActions,

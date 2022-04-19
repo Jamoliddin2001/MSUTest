@@ -93,7 +93,7 @@ fun WelcomeScreen(navController: NavController) {
 
                 OutlinedButton(
                     onClick = {
-                        //TODO
+                        navController.navigate(Screen.RegisterScreen.route)
                     },
                     shape = RoundedCornerShape(size = 12.dp),
                     border = BorderStroke(width = 1.dp, color = Color.White),

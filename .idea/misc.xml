@@ -3,6 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/MyPrograms/MyTest/app/src/main/res/drawable/ic_home.xml" value="0.122" />
+        <entry key="..\:/MyPrograms/MyTest/app/src/main/res/drawable/ic_profile.xml" value="0.122" />
+        <entry key="..\:/MyPrograms/MyTest/app/src/main/res/drawable/ic_rating.xml" value="0.122" />
         <entry key="..\:/MyPrograms/MyTest/app/src/main/res/drawable/image_background_splash.xml" value="0.1235" />
         <entry key="..\:/MyPrograms/MyTest/app/src/main/res/drawable/welcome_screen_background.xml" value="0.1235" />
       </map>

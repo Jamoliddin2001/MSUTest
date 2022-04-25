@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -23,6 +24,7 @@ import androidx.compose.ui.unit.sp
 import jamoliddin.tj.mytest.presentation.theme.GrayIndicator
 import jamoliddin.tj.mytest.presentation.theme.GrayLabel
 import jamoliddin.tj.mytest.presentation.theme.Primary
+import retrofit2.Retrofit
 
 @Composable
 fun CustomTextField(

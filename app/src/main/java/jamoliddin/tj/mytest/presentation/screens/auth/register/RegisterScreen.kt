@@ -124,7 +124,6 @@ fun RegisterScreen(
 
         CustomTextField(
             onTextChanged = { confirmPassword = it },
-            isPasswordField = true,
             placeHolderText = "Повторите пароль",
             keyboardActions = KeyboardActions(
                 onDone = { keyboardController?.hide() }
@@ -150,7 +149,13 @@ fun RegisterScreen(
     }
 
     if (authState.value is AuthState.Success) {
-        navController.navigate(Screen.RegisterScreenPersonalData.route)
+        LaunchedEffect(key1 = authState.value){
+            navController.navigate(Screen.RegisterScreenPersonalData.route+"/$email"){
+                popUpTo(0){
+                    inclusive = true
+                }
+            }
+        }
     }
 
     if (authState.value is AuthState.AuthError) {

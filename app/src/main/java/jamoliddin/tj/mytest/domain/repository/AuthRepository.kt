@@ -13,7 +13,7 @@ class AuthRepository @Inject constructor(
 
     fun register(user: User){
         try {
-            userList.document(user.id).set(user)
+//            user.id?.let { userList.document(it).set(user) }
         } catch (e:Exception){
             e.printStackTrace()
         }

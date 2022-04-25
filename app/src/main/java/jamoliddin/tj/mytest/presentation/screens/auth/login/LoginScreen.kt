@@ -1,5 +1,6 @@
 package jamoliddin.tj.mytest.presentation.screens.auth
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -12,6 +13,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -19,21 +21,30 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import jamoliddin.tj.mytest.R
+import jamoliddin.tj.mytest.domain.model.Screen
 import jamoliddin.tj.mytest.presentation.components.BackButton
 import jamoliddin.tj.mytest.presentation.components.CustomTextField
 import jamoliddin.tj.mytest.presentation.components.PrimaryButton
+import jamoliddin.tj.mytest.presentation.components.Progressbar
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun LoginScreen(
-    navController: NavController
+    navController: NavController,
+    authViewModel: AuthViewModel = viewModel()
 ) {
+
+    val loginState = authViewModel.loginState
+    val context = LocalContext.current
+
+
     val focusRequester = FocusRequester()
     val keyboardController = LocalSoftwareKeyboardController.current
-    var phone by remember {
+    var email by remember {
         mutableStateOf("")
     }
 
@@ -79,7 +90,7 @@ fun LoginScreen(
         Spacer(modifier = Modifier.padding(16.dp))
 
         CustomTextField(
-            onTextChanged = {phone = it},
+            onTextChanged = {email = it},
             focusRequester = focusRequester,
             placeHolderText = "Электронная почта",
             maxCount = 99,
@@ -111,9 +122,29 @@ fun LoginScreen(
         Spacer(modifier = Modifier.padding(32.dp))
 
         PrimaryButton(stringId = R.string.login) {
-
+            if(email.isNotEmpty() && password.isNotEmpty()){
+                authViewModel.login(email, password,context)
+            } else Toast.makeText(context, "Заполните поля", Toast.LENGTH_SHORT).show()
         }
 
+    }
+
+    if(loginState.value is AuthState.Loading){
+        Progressbar()
+    }
+
+    if(loginState.value is AuthState.Success){
+        LaunchedEffect(key1 = loginState.value ){
+            navController.navigate(Screen.MainScreen.route){
+                popUpTo(0){
+                    inclusive = true
+                }
+            }
+        }
+    }
+
+    if(loginState.value is AuthState.AuthError){
+        Toast.makeText(context, (loginState.value as AuthState.AuthError).message, Toast.LENGTH_SHORT).show()
     }
 
 }

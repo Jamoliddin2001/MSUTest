@@ -8,10 +8,7 @@ import dagger.hilt.android.HiltAndroidApp
 @HiltAndroidApp
 class App:Application() {
 
-    lateinit var unauthenticatedHandled: MutableState<Boolean>
-
     override fun onCreate() {
         super.onCreate()
-        unauthenticatedHandled = mutableStateOf(false)
     }
 }

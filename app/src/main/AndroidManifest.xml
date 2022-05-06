@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="jamoliddin.tj.mytest">
+    package="jamoliddin.tj.mytest_teachers">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
-        android:name=".App"
+        android:name="jamoliddin.tj.mytest_teachers.App"
         android:allowBackup="true"
         android:icon="@drawable/msu"
         android:label="@string/app_name"
@@ -11,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyTest">
         <activity
-            android:name=".presentation.MainActivity"
+            android:name="jamoliddin.tj.mytest_teachers.presentation.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.MyTest">

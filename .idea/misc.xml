@@ -3,11 +3,19 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/MyPrograms/MyTest/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1205" />
+        <entry key="..\:/MyPrograms/MyTest/app/src/main/res/drawable-v24/ic_user_circle.xml" value="0.1205" />
+        <entry key="..\:/MyPrograms/MyTest/app/src/main/res/drawable/ic_exit.xml" value="0.1205" />
         <entry key="..\:/MyPrograms/MyTest/app/src/main/res/drawable/ic_home.xml" value="0.122" />
+        <entry key="..\:/MyPrograms/MyTest/app/src/main/res/drawable/ic_info.xml" value="0.1205" />
         <entry key="..\:/MyPrograms/MyTest/app/src/main/res/drawable/ic_profile.xml" value="0.122" />
         <entry key="..\:/MyPrograms/MyTest/app/src/main/res/drawable/ic_rating.xml" value="0.122" />
+        <entry key="..\:/MyPrograms/MyTest/app/src/main/res/drawable/ic_user_circle.xml" value="0.1205" />
         <entry key="..\:/MyPrograms/MyTest/app/src/main/res/drawable/image_background_splash.xml" value="0.1235" />
         <entry key="..\:/MyPrograms/MyTest/app/src/main/res/drawable/welcome_screen_background.xml" value="0.1235" />
+        <entry key="..\:/MyPrograms/MyTestTeachers/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1205" />
+        <entry key="..\:/MyPrograms/MyTestTeachers/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1205" />
+        <entry key="..\:/MyPrograms/MyTestTeachers/app/src/main/res/drawable/image_background_splash.xml" value="0.1205" />
       </map>
     </option>
   </component>

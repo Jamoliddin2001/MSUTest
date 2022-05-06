@@ -1,6 +1,11 @@
 <resources>
-    <string name="app_name">MSU TEST</string>
+    <string name="app_name">TEST TEACHERS</string>
     <string name="next">Далее</string>
     <string name="login">Войти</string>
     <string name="createUser">Создать</string>
+    <string name="logout_title">Выход из аккаунта</string>
+    <string name="logout_body">Вы действительно хотите выйти?</string>
+    <string name="logout_label">Выйти</string>
+    <string name="cancel">Отмена</string>
+    <string name="add_new_subject">+ Добавить новый тест</string>
 </resources>

@@ -1,14 +1,17 @@
 package jamoliddin.tj.mytest_teachers.presentation.screens.main
 
+import android.util.Log
 import android.widget.Toast
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.selection.selectableGroup
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
-import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -25,6 +28,8 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import jamoliddin.tj.mytest_teachers.data.model.my_questions.Question
+import jamoliddin.tj.mytest_teachers.domain.model.Screen
+import jamoliddin.tj.mytest_teachers.domain.util.TAG
 import jamoliddin.tj.mytest_teachers.presentation.components.BackButton
 import jamoliddin.tj.mytest_teachers.presentation.components.CustomTextField
 import jamoliddin.tj.mytest_teachers.presentation.components.PrimaryButton
@@ -83,7 +88,7 @@ fun AddMyTestScreen(
     }
     val listQuestions = mutableListOf<Question>()
 
-    BackButton(navController = navController)
+    if(!next) BackButton(navController = navController)
 
     val state = rememberScrollState()
     if (!next){
@@ -225,15 +230,37 @@ fun AddMyTestScreen(
     var questionNumber by remember {
         mutableStateOf(1)
     }
+    val stateA = remember {
+        mutableStateOf(false)
+    }
+    val stateB = remember {
+        mutableStateOf(false)
+    }
+    val stateC = remember {
+        mutableStateOf(false)
+    }
+    val stateD = remember {
+        mutableStateOf(false)
+    }
+    val errorText = remember {
+        mutableStateOf(false)
+    }
+
+    fun check():Boolean{
+        return varA.isNotEmpty() && varB.isNotEmpty() && varC.isNotEmpty()
+                && varD.isNotEmpty() && question.isNotEmpty()
+    }
+
     if(next){
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = 16.dp, vertical = 8.dp)
                 .verticalScroll(state)
+                .selectableGroup()
         ) {
             Text(
-                text = "Мой тест",
+                text = "Мои вопросы",
                 modifier = Modifier.align(Alignment.CenterHorizontally),
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Medium
@@ -267,6 +294,9 @@ fun AddMyTestScreen(
                     unfocusedIndicatorColor = GrayIndicator,
                     focusedIndicatorColor = Primary,
                     cursorColor = Primary
+                ),
+                keyboardOptions = KeyboardOptions(
+                    capitalization = KeyboardCapitalization.Sentences
                 )
             )
 
@@ -280,71 +310,161 @@ fun AddMyTestScreen(
 
             Spacer(modifier = Modifier.padding(8.dp))
 
-            OutlinedTextField(
-                modifier = Modifier.fillMaxWidth(),
-                value = varA,
-                label = { Text(text = "A", fontSize = 14.sp,color = GrayLabel) },
-                onValueChange = { varA = it },
-                colors = TextFieldDefaults.textFieldColors(
-                    focusedLabelColor = GrayLabel,
-                    unfocusedLabelColor = GrayLabel,
-                    backgroundColor = Color.Transparent,
-                    unfocusedIndicatorColor = GrayIndicator,
-                    focusedIndicatorColor = Primary,
-                    cursorColor = Primary
+
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                RadioButton(
+                    selected = stateA.value,
+                    onClick = {
+                        stateA.value = true
+                        stateB.value = false
+                        stateC.value = false
+                        stateD.value = false
+                    },
+                    modifier = Modifier.padding(end = 8.dp),
+                    colors = RadioButtonDefaults.colors(
+                        selectedColor = Primary,
+                        unselectedColor = GrayLabel
+                    )
                 )
-            )
+                OutlinedTextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    value = varA,
+                    label = { Text(text = "A", fontSize = 14.sp,color = GrayLabel) },
+                    onValueChange = { varA = it },
+                    colors = TextFieldDefaults.textFieldColors(
+                        focusedLabelColor = GrayLabel,
+                        unfocusedLabelColor = GrayLabel,
+                        backgroundColor = Color.Transparent,
+                        unfocusedIndicatorColor = GrayIndicator,
+                        focusedIndicatorColor = Primary,
+                        cursorColor = Primary
+                    ),
+                    keyboardOptions = KeyboardOptions(
+                        capitalization = KeyboardCapitalization.Sentences
+                    )
+                )
+            }
 
             Spacer(modifier = Modifier.padding(8.dp))
 
-            OutlinedTextField(
-                modifier = Modifier.fillMaxWidth(),
-                value = varB,
-                label = { Text(text = "B", fontSize = 14.sp,color = GrayLabel) },
-                onValueChange = { varB = it },
-                colors = TextFieldDefaults.textFieldColors(
-                    focusedLabelColor = GrayLabel,
-                    unfocusedLabelColor = GrayLabel,
-                    backgroundColor = Color.Transparent,
-                    unfocusedIndicatorColor = GrayIndicator,
-                    focusedIndicatorColor = Primary,
-                    cursorColor = Primary
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                RadioButton(
+                    selected = stateB.value,
+                    onClick = {
+                        stateA.value = false
+                        stateB.value = true
+                        stateC.value = false
+                        stateD.value = false
+                    },
+                    modifier = Modifier.padding(end = 8.dp),
+                    colors = RadioButtonDefaults.colors(
+                        selectedColor = Primary,
+                        unselectedColor = GrayLabel
+                    )
                 )
-            )
+                OutlinedTextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    value = varB,
+                    label = { Text(text = "B", fontSize = 14.sp,color = GrayLabel) },
+                    onValueChange = { varB = it },
+                    colors = TextFieldDefaults.textFieldColors(
+                        focusedLabelColor = GrayLabel,
+                        unfocusedLabelColor = GrayLabel,
+                        backgroundColor = Color.Transparent,
+                        unfocusedIndicatorColor = GrayIndicator,
+                        focusedIndicatorColor = Primary,
+                        cursorColor = Primary
+                    ),
+                    keyboardOptions = KeyboardOptions(
+                        capitalization = KeyboardCapitalization.Sentences
+                    )
+                )
+            }
 
             Spacer(modifier = Modifier.padding(8.dp))
 
-            OutlinedTextField(
-                modifier = Modifier.fillMaxWidth(),
-                value = varC,
-                label = { Text(text = "C", fontSize = 14.sp,color = GrayLabel) },
-                onValueChange = { varC = it },
-                colors = TextFieldDefaults.textFieldColors(
-                    focusedLabelColor = GrayLabel,
-                    unfocusedLabelColor = GrayLabel,
-                    backgroundColor = Color.Transparent,
-                    unfocusedIndicatorColor = GrayIndicator,
-                    focusedIndicatorColor = Primary,
-                    cursorColor = Primary
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                RadioButton(
+                    selected = stateC.value,
+                    onClick = {
+                        stateA.value = false
+                        stateB.value = false
+                        stateC.value = true
+                        stateD.value = false
+                    },
+                    modifier = Modifier.padding(end = 8.dp),
+                    colors = RadioButtonDefaults.colors(
+                        selectedColor = Primary,
+                        unselectedColor = GrayLabel
+                    )
                 )
-            )
+                OutlinedTextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    value = varC,
+                    label = { Text(text = "C", fontSize = 14.sp,color = GrayLabel) },
+                    onValueChange = { varC = it },
+                    colors = TextFieldDefaults.textFieldColors(
+                        focusedLabelColor = GrayLabel,
+                        unfocusedLabelColor = GrayLabel,
+                        backgroundColor = Color.Transparent,
+                        unfocusedIndicatorColor = GrayIndicator,
+                        focusedIndicatorColor = Primary,
+                        cursorColor = Primary
+                    ),
+                    keyboardOptions = KeyboardOptions(
+                        capitalization = KeyboardCapitalization.Sentences
+                    )
+                )
+            }
 
             Spacer(modifier = Modifier.padding(8.dp))
 
-            OutlinedTextField(
-                modifier = Modifier.fillMaxWidth(),
-                value = varD,
-                label = { Text(text = "D", fontSize = 14.sp,color = GrayLabel) },
-                onValueChange = { varD = it },
-                colors = TextFieldDefaults.textFieldColors(
-                    focusedLabelColor = GrayLabel,
-                    unfocusedLabelColor = GrayLabel,
-                    backgroundColor = Color.Transparent,
-                    unfocusedIndicatorColor = GrayIndicator,
-                    focusedIndicatorColor = Primary,
-                    cursorColor = Primary
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                RadioButton(
+                    selected = stateD.value,
+                    onClick = {
+                        stateA.value = false
+                        stateB.value = false
+                        stateC.value = false
+                        stateD.value = true
+                    },
+                    modifier = Modifier.padding(end = 8.dp),
+                    colors = RadioButtonDefaults.colors(
+                        selectedColor = Primary,
+                        unselectedColor = GrayLabel
+                    )
                 )
-            )
+                OutlinedTextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    value = varD,
+                    label = { Text(text = "D", fontSize = 14.sp,color = GrayLabel) },
+                    onValueChange = { varD = it },
+                    colors = TextFieldDefaults.textFieldColors(
+                        focusedLabelColor = GrayLabel,
+                        unfocusedLabelColor = GrayLabel,
+                        backgroundColor = Color.Transparent,
+                        unfocusedIndicatorColor = GrayIndicator,
+                        focusedIndicatorColor = Primary,
+                        cursorColor = Primary
+                    ),
+                    keyboardOptions = KeyboardOptions(
+                        capitalization = KeyboardCapitalization.Sentences
+                    )
+                )
+            }
+
+            if(errorText.value) Text(text = "Выберите правильный ответ!", fontSize = 14.sp, color = BloodRed)
 
             Spacer(modifier = Modifier.padding(16.dp))
 
@@ -363,9 +483,83 @@ fun AddMyTestScreen(
                 )
             )*/
 
+            Button(
+                onClick = {
+                    if (check()){
+                        val rightAnswer = when {
+                            stateA.value -> varA
+                            stateB.value -> varB
+                            stateC.value -> varC
+                            stateD.value -> varC
+                            else -> null
+                        }
+                        if (rightAnswer != null){
+                            val newQuestion = Question(
+                                answer = rightAnswer,
+                                varA = varA,
+                                varB = varB,
+                                varC = varC,
+                                varD = varD,
+                                question = question
+                            )
+                            listQuestions.add(newQuestion)
+                            question = ""
+                            varA = ""
+                            varB = ""
+                            varC = ""
+                            varD = ""
+                            stateA.value = false
+                            stateB.value = false
+                            stateC.value = false
+                            stateD.value = false
+                            questionNumber++
+                            errorText.value = false
+                            Log.d(TAG, "AddMyTestScreen: $listQuestions")
+                        } else errorText.value = true
+                    } else Toast.makeText(context, "Заполните все поля для продолжения!", Toast.LENGTH_SHORT).show()
+
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp)
+                    .height(48.dp),
+                shape = RoundedCornerShape(size = 12.dp),
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = Color.White,
+                    contentColor = Primary
+                )
+            ) {
+                Text(
+                    text = "+ новый вопрос",
+                    fontWeight = FontWeight.Medium
+                )
+            }
+
+            Spacer(modifier = Modifier.padding(12.dp))
+
+            OutlinedButton(
+                onClick = {
+                    //TODO
+                },
+                shape = RoundedCornerShape(size = 12.dp),
+                border = BorderStroke(width = 1.dp, color = Color.White),
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = Primary,
+                    contentColor = Color.White
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp)
+                    .height(48.dp),
+            ) {
+                Text(
+                    text = "Сохранить тест",
+                    fontWeight = FontWeight.Medium
+                )
+            }
+
         }
         
     }
-
 
 }

@@ -6,5 +6,5 @@ data class Question(
     val varB: String? = "",
     val varC: String? = "",
     val varD: String? = "",
-    val question: String? = ""
+    var question: String? = ""
 )

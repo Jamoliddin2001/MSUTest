@@ -7,7 +7,7 @@ data class MyQuestions(
     val minRating4: Int? = 0,
     val minRating5: Int? = 0,
     val subject: String? = "",
-    val questions: List<Question?>? = null,
+    val questions: List<Question>,
     val teacherID: String,
     val timeToDo: Int
 )

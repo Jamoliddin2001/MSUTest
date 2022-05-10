@@ -6,17 +6,17 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import jamoliddin.tj.mytest_teachers.domain.model.Graph
 import jamoliddin.tj.mytest_teachers.domain.model.Screen
-import jamoliddin.tj.mytest_teachers.presentation.screens.mytests.MyTestsScreen
+import jamoliddin.tj.mytest_teachers.presentation.screens.mytests.MyResultsScreen
 
 fun NavGraphBuilder.MyTestsGraph(navController: NavController) {
     navigation(
-        startDestination = Screen.MyTestsScreen.route,
+        startDestination = Screen.MyResultsScreen.route,
         route = Graph.MyTests.route
     ){
         composable(
-            route = Screen.MyTestsScreen.route
+            route = Screen.MyResultsScreen.route
         ){
-            MyTestsScreen(navController = navController)
+            MyResultsScreen(navController = navController)
         }
     }
 }

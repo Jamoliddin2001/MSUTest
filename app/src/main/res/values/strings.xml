@@ -8,4 +8,5 @@
     <string name="logout_label">Выйти</string>
     <string name="cancel">Отмена</string>
     <string name="add_new_subject">+ Добавить новый тест</string>
+    <string name="questions">Вопросы</string>
 </resources>

@@ -38,10 +38,11 @@ fun CustomTextField(
     keyboardActions: KeyboardActions = KeyboardActions {  },
     keyboardOptions: KeyboardOptions = KeyboardOptions(
         keyboardType = KeyboardType.Phone
-    )
+    ),
+    firstText: String = ""
 ) {
 
-    var text by rememberSaveable { mutableStateOf("") }
+    var text by rememberSaveable { mutableStateOf(firstText) }
     var passwordVisibility by remember {
         mutableStateOf(false)
     }

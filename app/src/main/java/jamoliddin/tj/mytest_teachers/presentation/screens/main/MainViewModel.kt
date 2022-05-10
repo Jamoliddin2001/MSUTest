@@ -21,18 +21,7 @@ class MainViewModel : ViewModel() {
     private val questionCollection = FirebaseFirestore.getInstance().collection(TEACHERS)
         .document(FirebaseAuth.getInstance().uid.toString()).collection(MY_QUESTIONS)
 
-    private val _stateAddQuestions: MutableState<UiState<Any>> =
-        mutableStateOf(UiState.Idle)
-    val stateAddQuestions: State<UiState<Any>> = _stateAddQuestions
 
-    fun addMyQuestions(myQuestions: MyQuestions) {
-        _stateAddQuestions.value = UiState.Loading
-        questionCollection.document(myQuestions.subject.toString()).set(myQuestions).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                _stateAddQuestions.value = UiState.Success(data = task.result)
-            } else _stateAddQuestions.value = UiState.Error(message = task.exception?.localizedMessage.toString())
-        }
-    }
 
     private val _stateGetAllSubjects: MutableState<UiState<List<String>>> = mutableStateOf(UiState.Idle)
     val stateGetAllSubjects: State<UiState<List<String>>> = _stateGetAllSubjects
@@ -48,6 +37,18 @@ class MainViewModel : ViewModel() {
                 }
                 _stateGetAllSubjects.value = UiState.Success(data = listSubjects)
             } else _stateGetAllSubjects.value = UiState.Error(task.exception?.localizedMessage.toString())
+        }
+    }
+
+    private val _stateDeleteSubject: MutableState<UiState<String>> = mutableStateOf(UiState.Idle)
+    val stateDeleteSubject: State<UiState<String>> = _stateDeleteSubject
+
+    fun deleteSubject(subject: String){
+        _stateDeleteSubject.value = UiState.Loading
+        questionCollection.document(subject).delete().addOnCompleteListener { task ->
+            if(task.isSuccessful){
+                _stateDeleteSubject.value = UiState.Success(data = "Success")
+            } else _stateDeleteSubject.value = UiState.Error(message = "Error")
         }
     }
 

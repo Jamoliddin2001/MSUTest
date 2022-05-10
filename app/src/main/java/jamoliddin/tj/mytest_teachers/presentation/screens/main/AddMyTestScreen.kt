@@ -27,23 +27,27 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import jamoliddin.tj.mytest_teachers.data.model.my_questions.MyQuestions
 import jamoliddin.tj.mytest_teachers.data.model.my_questions.Question
+import jamoliddin.tj.mytest_teachers.domain.UiState
 import jamoliddin.tj.mytest_teachers.domain.model.Screen
 import jamoliddin.tj.mytest_teachers.domain.util.TAG
 import jamoliddin.tj.mytest_teachers.presentation.components.BackButton
 import jamoliddin.tj.mytest_teachers.presentation.components.CustomTextField
 import jamoliddin.tj.mytest_teachers.presentation.components.PrimaryButton
+import jamoliddin.tj.mytest_teachers.presentation.components.Progressbar
 import jamoliddin.tj.mytest_teachers.presentation.theme.*
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun AddMyTestScreen(
     navController: NavController,
-    mainViewModel: MainViewModel = viewModel()
+    mainViewModel: MainViewModel = viewModel(),
+    addMyTestViewModel: AddMyTestViewModel = viewModel()
 ) {
     val context = LocalContext.current
     val keyboardController = LocalSoftwareKeyboardController.current
-
+    val teacherID = addMyTestViewModel.uid!!
     var subject by remember {
         mutableStateOf("")
     }
@@ -66,7 +70,7 @@ fun AddMyTestScreen(
         mutableStateOf("0")
     }
     var next by remember {
-        mutableStateOf(true)
+        mutableStateOf(false)
     }
     var question by remember {
         mutableStateOf("")
@@ -86,7 +90,7 @@ fun AddMyTestScreen(
     var answer by remember {
         mutableStateOf("")
     }
-    val listQuestions = mutableListOf<Question>()
+//    val listQuestions = arrayListOf<Question>()
 
     if(!next) BackButton(navController = navController)
 
@@ -490,7 +494,7 @@ fun AddMyTestScreen(
                             stateA.value -> varA
                             stateB.value -> varB
                             stateC.value -> varC
-                            stateD.value -> varC
+                            stateD.value -> varD
                             else -> null
                         }
                         if (rightAnswer != null){
@@ -502,7 +506,7 @@ fun AddMyTestScreen(
                                 varD = varD,
                                 question = question
                             )
-                            listQuestions.add(newQuestion)
+                            addMyTestViewModel.arrayOfQuestions.add(newQuestion)
                             question = ""
                             varA = ""
                             varB = ""
@@ -514,7 +518,7 @@ fun AddMyTestScreen(
                             stateD.value = false
                             questionNumber++
                             errorText.value = false
-                            Log.d(TAG, "AddMyTestScreen: $listQuestions")
+                            Log.d(TAG, "AddMyTestScreen: ${addMyTestViewModel.arrayOfQuestions}")
                         } else errorText.value = true
                     } else Toast.makeText(context, "Заполните все поля для продолжения!", Toast.LENGTH_SHORT).show()
 
@@ -539,7 +543,41 @@ fun AddMyTestScreen(
 
             OutlinedButton(
                 onClick = {
-                    //TODO
+                    if (check()){
+                        val rightAnswer = when {
+                            stateA.value -> varA
+                            stateB.value -> varB
+                            stateC.value -> varC
+                            stateD.value -> varD
+                            else -> null
+                        }
+                        if (rightAnswer != null){
+                            val newQuestion = Question(
+                                answer = rightAnswer,
+                                varA = varA,
+                                varB = varB,
+                                varC = varC,
+                                varD = varD,
+                                question = question
+                            )
+                            addMyTestViewModel.arrayOfQuestions.add(newQuestion)
+                            errorText.value = false
+                            Log.d(TAG, "AddMyTestScreen: ${addMyTestViewModel.arrayOfQuestions}")
+                            val myQuestions = MyQuestions(
+                                countQuestion = countQuestion.toInt(),
+                                course = course.toInt(),
+                                minRating3 = minRating3.toInt(),
+                                minRating4 = minRating4.toInt(),
+                                minRating5 = minRating5.toInt(),
+                                subject = subject,
+                                questions = addMyTestViewModel.arrayOfQuestions,
+                                teacherID = teacherID,
+                                timeToDo = timeToDo.toInt()
+                            )
+                            addMyTestViewModel.addMyQuestions(myQuestions)
+
+                        } else errorText.value = true
+                    } else Toast.makeText(context, "Заполните все поля для продолжения!", Toast.LENGTH_SHORT).show()
                 },
                 shape = RoundedCornerShape(size = 12.dp),
                 border = BorderStroke(width = 1.dp, color = Color.White),
@@ -560,6 +598,25 @@ fun AddMyTestScreen(
 
         }
         
+    }
+
+    val stateAddQuestion = addMyTestViewModel.stateAddQuestions.value
+
+    if(stateAddQuestion is UiState.Loading){
+        Progressbar()
+    }
+
+    if(stateAddQuestion is UiState.Success){
+        LaunchedEffect(key1 = true){
+            navController.navigate(Screen.MainScreen.route){
+                popUpTo(0){
+                    inclusive = true
+                }
+            }
+        }
+    }
+    if(stateAddQuestion is UiState.Error){
+        Toast.makeText(context, stateAddQuestion.message, Toast.LENGTH_SHORT).show()
     }
 
 }

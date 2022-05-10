@@ -10,10 +10,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavController
 
 @Composable
-fun MyTestsScreen(
+fun MyResultsScreen(
     navController: NavController
 ) {
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
-        Text(text = "MyTests", textAlign = TextAlign.Center)
+        Text(text = "Results", textAlign = TextAlign.Center)
     }
 }

@@ -38,7 +38,7 @@ fun BottomAppBar(navController: NavController) {
 
         BottomNavigationItem(
             navController = navController,
-            screen = Screen.MyTestsScreen,
+            screen = Screen.MyResultsScreen,
             painterId = R.drawable.ic_rating,
             label = "Результаты"
         )

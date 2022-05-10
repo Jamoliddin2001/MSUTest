@@ -6,16 +6,21 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -28,11 +33,14 @@ import jamoliddin.tj.mytest_teachers.domain.UiState
 import jamoliddin.tj.mytest_teachers.domain.model.Screen
 import jamoliddin.tj.mytest_teachers.domain.util.TAG
 import jamoliddin.tj.mytest_teachers.presentation.components.CardSubject
+import jamoliddin.tj.mytest_teachers.presentation.components.DeleteDialog
 import jamoliddin.tj.mytest_teachers.presentation.components.PrimaryButton
 import jamoliddin.tj.mytest_teachers.presentation.components.Progressbar
+import jamoliddin.tj.mytest_teachers.presentation.components.common.LogoutDialog
 import jamoliddin.tj.mytest_teachers.presentation.screens.auth.AuthViewModel
 import jamoliddin.tj.mytest_teachers.presentation.theme.*
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun MainScreen(
     navController: NavController,
@@ -46,22 +54,11 @@ fun MainScreen(
     val user = sharedPreferences.getTeacher()
     val uid = FirebaseAuth.getInstance().uid.toString()
 
-    val myQuestions = MyQuestions(
-        10, 1, 50, 75, 85, "MATH",
-        listOf(
-            Question("Is", "A", "B", "C", "D", "1 How are you?"),
-            Question("Is", "A", "B", "C", "D", "2 How are you?"),
-        ), uid, 180
-    )
-
-//    LaunchedEffect(key1 = true){
-//        mainViewModel.addMyQuestions(myQuestions)
-//    }
-
     val stateGetAllSubjects = mainViewModel.stateGetAllSubjects.value
     LaunchedEffect(key1 = true) {
         mainViewModel.getAllSubjects()
     }
+    val stateDelete = mainViewModel.stateDeleteSubject.value
 
     /*val state = mainViewModel.stateAddQuestions
 
@@ -99,6 +96,26 @@ fun MainScreen(
         }
     }*/
 
+    val dialogVisibility = remember {
+        mutableStateOf(false)
+    }
+
+    var subject: String? = ""
+
+    DeleteDialog(
+        dialogVisibility = dialogVisibility,
+        onDelete = {
+            dialogVisibility.value = false
+            mainViewModel.deleteSubject(subject.toString())
+        }
+    )
+
+    if(stateDelete is UiState.Success){
+        LaunchedEffect(key1 = true){
+            mainViewModel.getAllSubjects()
+        }
+    }
+
     if (stateGetAllSubjects is UiState.Success) {
         Column(
             Modifier
@@ -106,15 +123,73 @@ fun MainScreen(
                 .background(GrayIndicator)
                 .padding(top = 12.dp, bottom = 130.dp)
         ) {
-            LazyColumn {
-                items(stateGetAllSubjects.data) { item ->
-                    CardSubject(
-                        navController = navController,
-                        subject = item
-                    )
+            if (stateGetAllSubjects.data.isNotEmpty()) {
+                LazyColumn {
+
+                    itemsIndexed(
+                        items = stateGetAllSubjects.data,
+                        key = { _, item ->
+                            item.hashCode()
+                        }
+                    ) { index, item ->
+                        val state = rememberDismissState(
+                            confirmStateChange = {
+                                if (it == DismissValue.DismissedToStart) {
+                                    subject = item
+                                    dialogVisibility.value = true
+                                }
+                                true
+                            }
+                        )
+
+                        SwipeToDismiss(
+                            state = state,
+                            background = {
+                                val color = when (state.dismissDirection) {
+                                    DismissDirection.StartToEnd -> Color.Transparent
+                                    DismissDirection.EndToStart -> PopularChipTextColor
+                                    null -> Color.Transparent
+                                }
+
+                                Column(Modifier.fillMaxSize()) {
+                                    Box(
+                                        modifier = Modifier
+                                            .background(color = color)
+                                            .fillMaxSize()
+                                            .padding(8.dp)
+                                    ) {
+                                        Icon(
+                                            imageVector = Icons.Default.Delete,
+                                            contentDescription = "Delete",
+                                            tint = Color.White,
+                                            modifier = Modifier.align(Alignment.CenterEnd)
+                                        )
+                                    }
+                                }
+                            },
+                            dismissContent = {
+                                CardSubject(navController = navController, subject = item)
+                            },
+                            directions = setOf(DismissDirection.EndToStart)
+                        )
+                    }
+                }
+            } else {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(text = "Пока пусто  : )", fontSize = 14.sp, color = Primary)
                 }
             }
         }
+    }
+
+    if(stateDelete is UiState.Loading){
+        Progressbar()
+    }
+    if(stateDelete is UiState.Error){
+        Toast.makeText(context, stateDelete.message, Toast.LENGTH_SHORT).show()
     }
 
     if (stateGetAllSubjects is UiState.Loading) {

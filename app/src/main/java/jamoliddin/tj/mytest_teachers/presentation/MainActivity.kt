@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -19,7 +18,7 @@ import jamoliddin.tj.mytest_teachers.presentation.theme.MyTestTheme
 
 val screensWithBottomNavigation = listOf(
     Screen.MainScreen.route,
-    Screen.MyTestsScreen.route,
+    Screen.MyResultsScreen.route,
     Screen.ProfileScreen.route
 )
 

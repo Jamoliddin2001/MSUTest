@@ -65,31 +65,31 @@ fun ShowMyTestScreen(
     if(stateTest is UiState.Success){
         Log.d(TAG, "ShowMyTestScreen: ${stateTest.data}")
         var subjects by remember {
-            mutableStateOf(stateTest.data.subject)
+            mutableStateOf(stateTest.data?.subject)
         }
         var countQuestion by remember {
-            mutableStateOf(stateTest.data.countQuestion.toString())
+            mutableStateOf(stateTest.data?.countQuestion.toString())
         }
         var course by remember {
-            mutableStateOf(stateTest.data.course.toString())
+            mutableStateOf(stateTest.data?.course.toString())
         }
         var minRating3 by remember {
-            mutableStateOf(stateTest.data.minRating3.toString())
+            mutableStateOf(stateTest.data?.minRating3.toString())
         }
         var minRating4 by remember {
-            mutableStateOf(stateTest.data.minRating4.toString())
+            mutableStateOf(stateTest.data?.minRating4.toString())
         }
         var minRating5 by remember {
-            mutableStateOf(stateTest.data.minRating5.toString())
+            mutableStateOf(stateTest.data?.minRating5.toString())
         }
         var timeToDo by remember {
-            mutableStateOf(stateTest.data.timeToDo.toString())
+            mutableStateOf(stateTest.data?.timeToDo.toString())
         }
         var next by remember {
             mutableStateOf(false)
         }
         var listOfQuestion by remember {
-            mutableStateOf(stateTest.data.questions)
+            mutableStateOf(stateTest.data?.questions)
         }
         var varA by remember {
             mutableStateOf("")
@@ -122,12 +122,12 @@ fun ShowMyTestScreen(
                         minRating3 = minRating3.toInt(),
                         minRating4 = minRating4.toInt(),
                         minRating5 = minRating5.toInt(),
-                        subject = stateTest.data.subject,
-                        questions = stateTest.data.questions,
+                        subject = stateTest.data?.subject,
+                        questions = stateTest.data!!.questions,
                         teacherID = stateTest.data.teacherID,
                         timeToDo = timeToDo.toInt()
                     )
-                    addMyTestViewModel.addMyQuestions(myQuestions)
+                    addMyTestViewModel.addMyQuestions(myQuestions, true)
                 } ,
                 modifier = Modifier.padding(8.dp)
             ) {
@@ -273,13 +273,22 @@ fun ShowMyTestScreen(
         }
 
         if(next){
-            Spacer(modifier = Modifier.padding(10.dp))
-            Box(modifier = Modifier
-                .fillMaxSize()
-                .background(GrayIndicator))
-            LazyColumn{
-                items(listOfQuestion){ index ->
-                    CardQuestion(question = index)
+            if(listOfQuestion != null){
+                Spacer(modifier = Modifier.padding(10.dp))
+                Box(modifier = Modifier
+                    .fillMaxSize()
+                    .background(GrayIndicator))
+                LazyColumn{
+                    items(listOfQuestion!!){ index ->
+                        CardQuestion(question = index)
+                    }
+                }
+            } else {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(text = "Пока пусто  : )", fontSize = 14.sp, color = Primary)
                 }
             }
         }

@@ -20,22 +20,23 @@ class ShowMyTestViewModel: ViewModel() {
     private val questionCollection = FirebaseFirestore.getInstance().collection(TEACHERS)
         .document(FirebaseAuth.getInstance().uid.toString()).collection(MY_QUESTIONS)
 
-    private val _stateShowTest: MutableState<UiState<MyQuestions>> = mutableStateOf(UiState.Idle)
-    val stateShowTest: State<UiState<MyQuestions>> = _stateShowTest
+    private val _stateShowTest: MutableState<UiState<MyQuestions?>> = mutableStateOf(UiState.Idle)
+    val stateShowTest: State<UiState<MyQuestions?>> = _stateShowTest
 
     fun getTest(subject: String){
         _stateShowTest.value = UiState.Loading
         var myTest: MyQuestions
         questionCollection.document(subject).get().addOnCompleteListener { task ->
             if(task.isSuccessful){
-                val data = task.result.data.toString()
-                try {
+                val data = task.result.toObject(MyQuestions::class.java)
+                _stateShowTest.value = UiState.Success(data)
+                /*try {
                     myTest = Gson().fromJson(data, MyQuestions::class.java)
                     _stateShowTest.value = UiState.Success(data = myTest)
                 } catch (e: JsonSyntaxException){
                     _stateShowTest.value = UiState.Error(e.localizedMessage?.toString() ?: "JsonSyntaxException")
                     Log.d(TAG, "getTest: ${e.localizedMessage}")
-                }
+                }*/
             } else Log.d(TAG, "getTestError: ${task.exception?.localizedMessage}")
         }
     }

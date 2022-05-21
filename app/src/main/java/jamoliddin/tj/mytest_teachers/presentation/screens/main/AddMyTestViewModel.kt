@@ -31,12 +31,13 @@ class AddMyTestViewModel : ViewModel() {
         mutableStateOf(UiState.Idle)
     val stateAddQuestions: State<UiState<Any>> = _stateAddQuestions
 
-    fun addMyQuestions(myQuestions: MyQuestions) {
+    fun addMyQuestions(myQuestions: MyQuestions, isUpdate: Boolean = false) {
         _stateAddQuestions.value = UiState.Loading
         questionCollection.document(myQuestions.subject.toString()).set(myQuestions).addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 Log.d(TAG, "addMyQuestions: questionSuccessAdd")
-                addSubject(Subject(subject = myQuestions.subject, teacherID = myQuestions.teacherID))
+                if(!isUpdate) addSubject(Subject(subject = myQuestions.subject, teacherID = myQuestions.teacherID))
+                else _stateAddQuestions.value = UiState.Success(data = "SUCCESS")
             } else _stateAddQuestions.value = UiState.Error(message = task.exception?.localizedMessage.toString())
         }
     }

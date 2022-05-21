@@ -107,6 +107,7 @@ fun MainScreen(
         onDelete = {
             dialogVisibility.value = false
             mainViewModel.deleteSubject(subject.toString())
+
         }
     )
 

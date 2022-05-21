@@ -18,6 +18,9 @@ import javax.inject.Inject
 
 class MainViewModel : ViewModel() {
 
+    private val uid = FirebaseAuth.getInstance().uid.toString()
+    private val collectionSubjects = FirebaseFirestore.getInstance().collection(SUBJECTS)
+
     private val questionCollection = FirebaseFirestore.getInstance().collection(TEACHERS)
         .document(FirebaseAuth.getInstance().uid.toString()).collection(MY_QUESTIONS)
 
@@ -47,8 +50,28 @@ class MainViewModel : ViewModel() {
         _stateDeleteSubject.value = UiState.Loading
         questionCollection.document(subject).delete().addOnCompleteListener { task ->
             if(task.isSuccessful){
-                _stateDeleteSubject.value = UiState.Success(data = "Success")
+                searchSubject(subject)
             } else _stateDeleteSubject.value = UiState.Error(message = "Error")
+        }
+    }
+
+    private fun searchSubject(subject:String){
+        collectionSubjects.whereEqualTo("subject",subject)
+            .whereEqualTo("teacherID",uid)
+            .get()
+            .addOnCompleteListener { task ->
+                if(task.isSuccessful){
+                    deleteFromSubject(task.result.documents[0].id)
+                } else _stateDeleteSubject.value = UiState.Error(message = "Error")
+            }
+    }
+
+    private fun deleteFromSubject(id: String){
+        collectionSubjects.document(id).delete().addOnCompleteListener { newTask ->
+            if(newTask.isSuccessful){
+                _stateDeleteSubject.value = UiState.Success(data = "SuccessDELETED")
+                Log.d(TAG, "deleteFromSubject: Success")
+            } else _stateDeleteSubject.value = UiState.Error(message = "ErrorDELETED")
         }
     }
 

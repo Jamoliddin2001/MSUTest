@@ -10,4 +10,6 @@ data class MyQuestions(
     val questions: List<Question>,
     val teacherID: String,
     val timeToDo: Int
-)
+){
+    constructor():this(0,0,0,0,0,"", listOf(Question()),"",0)
+}
